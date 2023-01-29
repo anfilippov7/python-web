@@ -1,0 +1,53 @@
+version: '3.11'
+
+volumes:
+  pgdata:
+  static_volume:
+
+services:
+
+  postgredb:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=netology_stocks_products
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - pgdata:/var/lib/postgressql/data
+    networks:
+      - db
+
+  djangoapp:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 stocks_products.wsgi
+    expose:
+      - 8000
+    volumes:
+      - .:/stocks_products/src
+      - static_volume:/stocks_products/static
+    networks:
+      - db
+      - nginx 
+    depends_on:
+      - postgredb
+
+  nginx:
+    image: nginx:1.21
+    ports:
+      - 8000:80
+    volumes:
+      - ./stocks_products/config/nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/stocks_products/static 
+    depends_on: 
+      - djangoapp
+    networks:
+      - db
+      - nginx 
+
+
+networks:
+  db:
+    driver: bridge
+  nginx:
+    driver: bridge
+
