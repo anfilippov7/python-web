@@ -1,0 +1,88 @@
+# примеры API-запросов
+
+@baseUrl = http://127.0.0.1:5000
+
+# регистрация пользователя
+POST {{baseUrl}}/register
+Content-Type: application/json
+
+{
+    "username": "Alexander",
+    "e_mail": "gk@mail.ru",
+    "password": "Dk+iojkghrth86g"
+}
+
+###
+
+# авторизация пользователя (получение токена)
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+    "username": "Alexander",
+    "e_mail": "gk@mail.ru",
+    "password": "Dk+iojkghrth86g"
+}
+
+###
+
+# попытка поменять пользователя
+PATCH {{baseUrl}}/user/1
+Content-Type: application/json
+token: 89d6ec20-8ddc-4b0a-816e-97f672ebc387
+
+{
+    "username": "Dmitry",
+    "e_mail": "88777gkh@mail.ru",
+    "password": "Dkjd36742+008996g"
+
+}
+
+###
+
+# попытка удалить пользователя
+DELETE {{baseUrl}}/user/1
+token: 89d6ec20-8ddc-4b0a-816e-97f672ebc387
+
+###
+
+# получение одного пользователя
+GET {{baseUrl}}/user/1
+Content-Type: application/json
+
+###
+
+# добавление объявления авторизованным пользователем
+POST {{baseUrl}}/service
+Content-Type: application/json
+token: 89d6ec20-8ddc-4b0a-816e-97f672ebc387
+
+{
+    "heading": "sell",
+    "description": "A useful thing"
+}
+
+###
+
+# просмотр одного объявления
+GET {{baseUrl}}/service/1
+Content-Type: application/json
+
+###
+
+# удаление объявления авторизованным пользователем
+DELETE {{baseUrl}}/service/2
+Content-Type: application/json
+token: 6c105ce1-dd9e-45b2-8274-283d8a4ff0bc
+
+###
+
+# изменение объявления авторизованным пользователем
+PATCH {{baseUrl}}/service/1
+Content-Type: application/json
+token: 89d6ec20-8ddc-4b0a-816e-97f672ebc387
+
+{
+    "heading": "Vodka",
+    "description": "Cheaply"
+}
